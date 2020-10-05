@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="2dp">
+
+        <Button
+            android:fontFamily="@font/jungdong"
+            android:id="@+id/fragment_today_today_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:textSize="12dp"
+            android:layout_gravity="left"
+            />
+        <ImageButton
+            android:id="@+id/ibtn_prev_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_left_arrow"
+            android:scaleType="fitXY"
+            android:background="@color/transparent"
+            android:padding="13dp"
+            android:layout_gravity="center"
+
+            />
+        <TextView
+            android:fontFamily="@font/jungdong"
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:longClickable="false"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:layout_marginRight="5dp"
+            android:textSize="14dp"
+            />
+        <TextView
+            android:fontFamily="@font/jungdong"
+            android:id="@+id/tv_fragment_today_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:textSize="14dp"
+            />
+
+        <ImageButton
+            android:id="@+id/ibtn_next_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_right_arrow"
+            android:scaleType="fitXY"
+            android:background="@color/transparent"
+            android:padding="13dp"
+            android:layout_gravity="center"
+
+            />
+
+        <ImageButton
+            android:id="@+id/btn_add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_plus"
+            android:background="@color/transparent"
+            android:layout_marginRight="20dp"
+            />
+    </Toolbar>
+    <LinearLayout
+        android:id="@+id/ll_swiper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:fontFamily="@font/jungdong"
+            android:id="@+id/tv_empty_today_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="등록된 일정이 없습니다."
+            android:textColor="#bbbbbb"
+            android:textAlignment="center"
+            android:textSize="16dp"
+            android:layout_marginTop="30dp"
+            android:visibility="visible"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_today_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>
