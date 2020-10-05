@@ -85,4 +85,7 @@ dependencies {
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    // Naver map
+    implementation 'com.naver.maps:map-sdk:3.5.0'
 }

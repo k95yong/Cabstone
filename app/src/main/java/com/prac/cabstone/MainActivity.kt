@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                         transaction = supportFragmentManager.beginTransaction()
                         transaction.show(homeFragment!!).commit()
                     } else {
-                        homeFragment = HomeFragment()
+                        homeFragment = HomeFragment(viewModel)
                         transaction.add(R.id.main_frame_layout, homeFragment!!)
                         transaction.show(homeFragment!!).commit()
                     }
