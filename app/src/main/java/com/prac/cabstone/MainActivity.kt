@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getBottomNavigationView().setOnNavigationItemSelectedListener(
             mOnNavigationItemSelectedListener
         )
+        viewModel.getBottomNavigationView().selectedItemId = R.id.bni_home
     }
 
     private val mOnNavigationItemSelectedListener =

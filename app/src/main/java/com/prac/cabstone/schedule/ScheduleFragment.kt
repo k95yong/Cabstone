@@ -256,16 +256,26 @@ class ScheduleFragment : Fragment {
         date_arr.sort()
         val dialogText = dialogView.findViewById<EditText>(R.id.et_dialog_contents)
         var selected_date = date_arr.get(0)
-        for (i in date_arr) {
+        date_arr.forEach{
             viewModel.insert(
                 Todo(
                     dialogText.text.toString(),
                     false,
-                    i,
+                    it,
                     gid
                 )
             )
         }
+//        for (i in date_arr) {
+//            viewModel.insert(
+//                Todo(
+//                    dialogText.text.toString(),
+//                    false,
+//                    i,
+//                    gid
+//                )
+//            )
+//        }
 
         cal.set(Calendar.YEAR, selected_date.subSequence(0, 4).toString().toInt())
         cal.set(Calendar.MONTH, selected_date.subSequence(5, 7).toString().toInt() - 1)

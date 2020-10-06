@@ -32,7 +32,6 @@ class HomeFragment : Fragment {
             var intent = Intent(context, SearchActivity::class.java)
             startActivity(intent)
         }
-
         return rootView
     }
 }

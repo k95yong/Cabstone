@@ -18,34 +18,40 @@ class DialogPlanMultiAdder(context: Context) {
     var set_data = mutableSetOf<String>()
 
     fun start(arr: ArrayList<String>, et_dialog_sel_date: EditText) {
-        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dlg.setContentView(R.layout.dialog_calendar)
-        dlg.setCancelable(true)
+        dlg.let{
+            it.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            it.setContentView(R.layout.dialog_calendar)
+            it.setCancelable(true)
+        }
         initView()
-        dlg.btn_dialog_calendar_ok.setOnClickListener {
-            for (value in set_data) {
-                arr.add(value)
+        dlg.run{
+            btn_dialog_calendar_ok.setOnClickListener {
+                for (value in set_data) {
+                    arr.add(value)
+                }
+                dismiss()
+                if (arr.size > 0) {
+                    et_dialog_sel_date.setText("${arr[0] + " 포함 '" + arr.size + "'건"}")
+                }
             }
-            dlg.dismiss()
-            if (arr.size > 0) {
-                et_dialog_sel_date.setText("${arr[0] + " 포함 '" + arr.size + "'건"}")
+            btn_dialog_calendar_cancle.setOnClickListener {
+                dismiss()
             }
+            show()
         }
-        dlg.btn_dialog_calendar_cancle.setOnClickListener {
-            dlg.dismiss()
-        }
-        dlg.show()
     }
 
     fun initView() {
         scheduleRecyclerViewAdapter = DialogRecyclerAdapter(this, set_data)
-        dlg.rv_dialog_calendar.layoutManager = GridLayoutManager(context, BaseCalendar.DAYS_OF_WEEK)
-        dlg.rv_dialog_calendar.adapter = scheduleRecyclerViewAdapter
-        dlg.ibtn_dialog_prev.setOnClickListener {
-            scheduleRecyclerViewAdapter.changeToPrevMonth()
-        }
-        dlg.ibtn_dialog_next.setOnClickListener {
-            scheduleRecyclerViewAdapter.changeToNextMonth()
+        dlg.run{
+            rv_dialog_calendar.layoutManager = GridLayoutManager(context, BaseCalendar.DAYS_OF_WEEK)
+            rv_dialog_calendar.adapter = scheduleRecyclerViewAdapter
+            ibtn_dialog_prev.setOnClickListener {
+                scheduleRecyclerViewAdapter.changeToPrevMonth()
+            }
+            ibtn_dialog_next.setOnClickListener {
+                scheduleRecyclerViewAdapter.changeToNextMonth()
+            }
         }
     }
 

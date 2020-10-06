@@ -167,8 +167,12 @@ class OcrFragment : Fragment() {
                     }
                     if(bitmap != null){
                         //iv_picture.setImageBitmap(rotatedBitmap)
-                        val ocrThread = ARGBBitmap(bitmap)?.let { OCRThread(it) }
-                        ocrThread?.isDaemon = true
+//                        val ocrThread = ARGBBitmap(bitmap)?.let { OCRThread(it) }
+                        val ocrThread = ARGBBitmap(bitmap)?.let {
+                            OCRThread(it).apply{
+                                isDaemon = true
+                            }
+                        }
                         ocrThread?.start()
                         tv_ocr_result.text = "please wait..."
                     }
