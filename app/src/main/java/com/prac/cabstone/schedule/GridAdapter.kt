@@ -21,11 +21,13 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.Holder> {
     var scheduleFragment:ScheduleFragment? = null
 
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflatedView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_schedule_choice, parent, false)
-        return Holder(inflatedView)
 
+        return Holder(inflatedView)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -49,10 +51,19 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.Holder> {
                     viewModel.addTransaction(mainActivity?.scheduleFragment!!)
                 }
                 viewModel.showTransaction(mainActivity?.scheduleFragment!!)
+                mainActivity?.cur_frag = 5
             }
+
 
         }
     }
+    fun deleteItem(idx: Int){
+//        viewModel.removeGroup(list[idx])
+//        list.remove(list[idx])
+        notifyDataSetChanged()
+    }
+
+
     fun swapItems(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
             Log.e("list before: ", list.toString())

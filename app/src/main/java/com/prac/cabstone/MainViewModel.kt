@@ -25,6 +25,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var transaction: FragmentTransaction
     private var mainActivity: MainActivity? = null
 
+    fun removeGroup(rm: Groups){
+        return db.groupsDao().delete(rm)
+    }
+
     fun getGroupIdx(): Long{
         return db.groupsDao().getIdx()
     }

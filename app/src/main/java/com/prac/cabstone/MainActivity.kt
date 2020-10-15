@@ -12,14 +12,17 @@ import com.prac.cabstone.schedule.ScheduleChoiceFragment
 import com.prac.cabstone.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
+
+
 
     var homeFragment: HomeFragment? = null
     var scheduleChoiceFragment: ScheduleChoiceFragment? = null
     var flowFragment: FlowFragment? = null
     var ocrFragment: OcrFragment? = null
     var scheduleFragment: ScheduleFragment? = null
-
+    var cur_frag = 1
 
     lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.setActivity(this)
     }
 
+
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             viewModel.setTransaction(supportFragmentManager.beginTransaction())
@@ -43,10 +47,12 @@ class MainActivity : AppCompatActivity() {
                     if (homeFragment != null) {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.showTransaction(homeFragment!!)
+                        cur_frag = 1
                     } else {
                         homeFragment = HomeFragment(viewModel)
                         viewModel.addTransaction(homeFragment!!)
                         viewModel.showTransaction(homeFragment!!)
+                        cur_frag = 1
                     }
                     scheduleChoiceFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
@@ -60,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(ocrFragment!!)
                     }
-                    scheduleFragment?.let{
+                    scheduleFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(scheduleFragment!!)
                     }
@@ -70,10 +76,12 @@ class MainActivity : AppCompatActivity() {
                     if (scheduleChoiceFragment != null) {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.showTransaction(scheduleChoiceFragment!!)
+                        cur_frag = 2
                     } else {
                         scheduleChoiceFragment = ScheduleChoiceFragment(viewModel)
                         viewModel.addTransaction(scheduleChoiceFragment!!)
                         viewModel.showTransaction(scheduleChoiceFragment!!)
+                        cur_frag = 2
                     }
                     homeFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
@@ -87,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(ocrFragment!!)
                     }
-                    scheduleFragment?.let{
+                    scheduleFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(scheduleFragment!!)
                     }
@@ -97,10 +105,12 @@ class MainActivity : AppCompatActivity() {
                     if (flowFragment != null) {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.showTransaction(flowFragment!!)
+                        cur_frag = 3
                     } else {
                         flowFragment = FlowFragment()
                         viewModel.addTransaction(flowFragment!!)
                         viewModel.showTransaction(flowFragment!!)
+                        cur_frag = 3
                     }
                     scheduleChoiceFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
@@ -114,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(ocrFragment!!)
                     }
-                    scheduleFragment?.let{
+                    scheduleFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(scheduleFragment!!)
                     }
@@ -124,10 +134,12 @@ class MainActivity : AppCompatActivity() {
                     if (ocrFragment != null) {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.showTransaction(ocrFragment!!)
+                        cur_frag = 4
                     } else {
                         ocrFragment = OcrFragment()
                         viewModel.addTransaction(ocrFragment!!)
                         viewModel.showTransaction(ocrFragment!!)
+                        cur_frag = 4
                     }
                     scheduleChoiceFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
@@ -141,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(homeFragment!!)
                     }
-                    scheduleFragment?.let{
+                    scheduleFragment?.let {
                         viewModel.setTransaction(supportFragmentManager.beginTransaction())
                         viewModel.hideTransaction(scheduleFragment!!)
                     }
@@ -150,4 +162,14 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
+
+    override fun onBackPressed() {
+        Log.e("cur_frag", cur_frag.toString())
+        if(cur_frag == 5){
+            viewModel.getBottomNavigationView().selectedItemId = R.id.bni_schedule
+            cur_frag = 2
+            return
+        }
+        super.onBackPressed()
+    }
 }

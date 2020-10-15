@@ -2,12 +2,14 @@ package com.prac.cabstone.schedule
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.prac.cabstone.MainViewModel
@@ -23,6 +25,7 @@ class ScheduleChoiceFragment : Fragment {
     constructor(viewModel: MainViewModel){
         this.viewModel = viewModel
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +50,12 @@ class ScheduleChoiceFragment : Fragment {
 
 
         val manager = GridLayoutManager(context, 4)
-        val callback = DragManageAdapter(gridAdapter, activity!!,
-            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT).or(ItemTouchHelper.RIGHT), -1)
+        //val manager = LinearLayoutManager(context)
+        val callback = DragManageAdapter(
+            gridAdapter, activity!!,
+            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT)
+                .or(ItemTouchHelper.RIGHT), -1
+        )
         val helper = ItemTouchHelper(callback)
         schedule_list.layoutManager = manager
         schedule_list.adapter = gridAdapter
@@ -62,7 +69,12 @@ class ScheduleChoiceFragment : Fragment {
                 if (dialogView.et_dialog_contents.text.isEmpty()) {
                     Toast.makeText(context, "일정의 이름을 입력해 주세요.", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.insert(Groups(dialogView.et_dialog_contents.text.toString(), viewModel.getGroupIdx() + 1))
+                    viewModel.insert(
+                        Groups(
+                            dialogView.et_dialog_contents.text.toString(),
+                            viewModel.getGroupIdx() + 1
+                        )
+                    )
                     gridAdapter.list = viewModel.getAllGList() as ArrayList<Groups>
                     gridAdapter.notifyDataSetChanged()
 
@@ -74,6 +86,5 @@ class ScheduleChoiceFragment : Fragment {
 
         }
     }
-
 
 }
