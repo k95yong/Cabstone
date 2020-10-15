@@ -1,23 +1,27 @@
 package com.prac.cabstone
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.prac.cabstone.flow.FlowFragment
 import com.prac.cabstone.home.HomeFragment
 import com.prac.cabstone.ocr.OcrFragment
+import com.prac.cabstone.schedule.ScheduleChoiceFragment
 import com.prac.cabstone.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
     var homeFragment: HomeFragment? = null
-    var scheduleFragment: ScheduleFragment? = null
+    var scheduleChoiceFragment: ScheduleChoiceFragment? = null
     var flowFragment: FlowFragment? = null
     var ocrFragment: OcrFragment? = null
-    var transaction = supportFragmentManager.beginTransaction()
+    var scheduleFragment: ScheduleFragment? = null
+
+
     lateinit var viewModel: MainViewModel
-    lateinit var bottomNavigationView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,101 +31,119 @@ class MainActivity : AppCompatActivity() {
             mOnNavigationItemSelectedListener
         )
         viewModel.getBottomNavigationView().selectedItemId = R.id.bni_home
+        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+        viewModel.setActivity(this)
     }
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
-            transaction = supportFragmentManager.beginTransaction()
+            viewModel.setTransaction(supportFragmentManager.beginTransaction())
             when (menuItem.itemId) {
                 R.id.bni_home -> {
                     if (homeFragment != null) {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.show(homeFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.showTransaction(homeFragment!!)
                     } else {
                         homeFragment = HomeFragment(viewModel)
-                        transaction.add(R.id.main_frame_layout, homeFragment!!)
-                        transaction.show(homeFragment!!).commit()
+                        viewModel.addTransaction(homeFragment!!)
+                        viewModel.showTransaction(homeFragment!!)
                     }
-                    scheduleFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(scheduleFragment!!).commit()
+                    scheduleChoiceFragment?.let {
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleChoiceFragment!!)
                     }
                     flowFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(flowFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(flowFragment!!)
                     }
                     ocrFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(ocrFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(ocrFragment!!)
+                    }
+                    scheduleFragment?.let{
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleFragment!!)
                     }
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.bni_schedule -> {
-                    if (scheduleFragment != null) {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.show(scheduleFragment!!).commit()
+                    if (scheduleChoiceFragment != null) {
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.showTransaction(scheduleChoiceFragment!!)
                     } else {
-                        scheduleFragment = ScheduleFragment(viewModel)
-                        transaction.add(R.id.main_frame_layout, scheduleFragment!!)
-                        transaction.show(scheduleFragment!!).commit()
+                        scheduleChoiceFragment = ScheduleChoiceFragment(viewModel)
+                        viewModel.addTransaction(scheduleChoiceFragment!!)
+                        viewModel.showTransaction(scheduleChoiceFragment!!)
                     }
                     homeFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(homeFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(homeFragment!!)
                     }
                     flowFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(flowFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(flowFragment!!)
                     }
                     ocrFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(ocrFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(ocrFragment!!)
+                    }
+                    scheduleFragment?.let{
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleFragment!!)
                     }
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.bni_flow -> {
                     if (flowFragment != null) {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.show(flowFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.showTransaction(flowFragment!!)
                     } else {
                         flowFragment = FlowFragment()
-                        transaction.add(R.id.main_frame_layout, flowFragment!!)
-                        transaction.show(flowFragment!!).commit()
+                        viewModel.addTransaction(flowFragment!!)
+                        viewModel.showTransaction(flowFragment!!)
                     }
-                    scheduleFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(scheduleFragment!!).commit()
+                    scheduleChoiceFragment?.let {
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleChoiceFragment!!)
                     }
                     homeFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(homeFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(homeFragment!!)
                     }
                     ocrFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(ocrFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(ocrFragment!!)
+                    }
+                    scheduleFragment?.let{
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleFragment!!)
                     }
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.bni_ocr -> {
                     if (ocrFragment != null) {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.show(ocrFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.showTransaction(ocrFragment!!)
                     } else {
                         ocrFragment = OcrFragment()
-                        transaction.add(R.id.main_frame_layout, ocrFragment!!)
-                        transaction.show(ocrFragment!!).commit()
+                        viewModel.addTransaction(ocrFragment!!)
+                        viewModel.showTransaction(ocrFragment!!)
                     }
-                    scheduleFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(scheduleFragment!!).commit()
+                    scheduleChoiceFragment?.let {
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleChoiceFragment!!)
                     }
                     flowFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(flowFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(flowFragment!!)
                     }
                     homeFragment?.let {
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.hide(homeFragment!!).commit()
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(homeFragment!!)
+                    }
+                    scheduleFragment?.let{
+                        viewModel.setTransaction(supportFragmentManager.beginTransaction())
+                        viewModel.hideTransaction(scheduleFragment!!)
                     }
                     return@OnNavigationItemSelectedListener true
                 }

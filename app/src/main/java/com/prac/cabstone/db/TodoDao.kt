@@ -8,8 +8,9 @@ interface TodoDao {
     @Query("SELECT * FROM Todo ")
     fun getAll(): List<Todo>
 
-    @Query("SELECT * FROM Todo WHERE day = :date")
-    fun getDayList(date: String): List<Todo>
+
+    @Query("SELECT * FROM Todo WHERE day = :date and g_name = :g_name")
+    fun getDayList(date: String, g_name: String): List<Todo>
 
     @Query("SELECT IFNULL(MAX(gid) + 1, 1) FROM Todo")
     fun getNewGid(): Long

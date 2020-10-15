@@ -32,18 +32,21 @@ class ScheduleFragment : Fragment {
     var today_date: String
     val arr_day = listOf("일", "월", "화", "수", "목", "금", "토")
     val viewModel: MainViewModel
-
-    constructor(vm: MainViewModel) {
+    val schedule_name: String
+    constructor(vm: MainViewModel, name: String) {
         viewModel = vm
         cal = viewModel.getCalendar()
         today_date = df.format(cal.time)
+        schedule_name = name
     }
 
     fun loadView() {
-        tv_toolbar.setText(df.format(cal.time))
+        tv_schedule_name.text = schedule_name
+        tv_toolbar.text = df.format(cal.time)
         today_date = df.format(cal.time)
+
         tv_fragment_today_day.setText(arr_day[cal.get(Calendar.DAY_OF_WEEK) - 1])
-        list = ArrayList(viewModel.getDayList(df.format(cal.time)))
+        list = ArrayList(viewModel.getDayList(df.format(cal.time), schedule_name))
         if (list.size == 0) {
             tv_empty_today_item.visibility = View.VISIBLE
         } else {
@@ -70,6 +73,7 @@ class ScheduleFragment : Fragment {
         tv_toolbar.setText(today_date)
         ll_swiper.setOnTouchListener(OnSwipeTouchListener())
         tv_fragment_today_day.setText(arr_day[cal.get(Calendar.DAY_OF_WEEK) - 1])
+        loadView()
         ibtn_prev_arrow.setOnClickListener {
             cal.add(Calendar.DATE, -1)
             loadView()
@@ -91,7 +95,7 @@ class ScheduleFragment : Fragment {
     override fun onResume() {
         super.onResume()
         today_date = df.format(cal.time)
-        list = ArrayList(viewModel.getDayList(today_date))
+        list = ArrayList(viewModel.getDayList(today_date, schedule_name))
         val lm = LinearLayoutManager(activity)
         if (list.size == 0) {
             tv_empty_today_item.visibility = View.VISIBLE
@@ -123,8 +127,6 @@ class ScheduleFragment : Fragment {
         if (cmd == 1) {
             val dialogView = layoutInflater.inflate(R.layout.custom_dialog, null)
             et_dialog_sel_date = dialogView.findViewById(R.id.et_dialog_sel_date)
-            dialogView.findViewById<EditText>(R.id.btn_dialog_single_choice)
-            dialogView.findViewById<EditText>(R.id.btn_dialog_multi_choice)
             btn_dialog_single_choice = dialogView.findViewById(R.id.btn_dialog_single_choice)
             btn_dialog_multi_choice = dialogView.findViewById(R.id.btn_dialog_multi_choice)
             btn_dialog_set_routine = dialogView.findViewById(R.id.btn_dialog_set_routine)
@@ -186,7 +188,7 @@ class ScheduleFragment : Fragment {
                             if (set_arr.size == 0) {
                                 set_arr.add(today_date)
                             }
-                            insertTodoData(dialogView, set_arr, todo.gid)
+                            insertTodoData(dialogView, set_arr, todo.gid, schedule_name)
                         } else {
                             updateTodoDate(dialogView, todo)
                         }
@@ -235,7 +237,7 @@ class ScheduleFragment : Fragment {
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
                     if (cmd == 1) {
-                        insertTodoData(dialogView, set_arr, todo.gid)
+                        insertTodoData(dialogView, set_arr, todo.gid, schedule_name)
                     } else {
                         updateTodoDate(dialogView, todo)
                     }
@@ -249,7 +251,8 @@ class ScheduleFragment : Fragment {
     fun insertTodoData(
         dialogView: View,
         date_arr: ArrayList<String>,
-        gid: Long
+        gid: Long,
+        s_name: String
     ) {
         if (date_arr.size == 0)
             return
@@ -262,20 +265,11 @@ class ScheduleFragment : Fragment {
                     dialogText.text.toString(),
                     false,
                     it,
-                    gid
+                    gid,
+                    s_name
                 )
             )
         }
-//        for (i in date_arr) {
-//            viewModel.insert(
-//                Todo(
-//                    dialogText.text.toString(),
-//                    false,
-//                    i,
-//                    gid
-//                )
-//            )
-//        }
 
         cal.set(Calendar.YEAR, selected_date.subSequence(0, 4).toString().toInt())
         cal.set(Calendar.MONTH, selected_date.subSequence(5, 7).toString().toInt() - 1)
@@ -295,7 +289,7 @@ class ScheduleFragment : Fragment {
         lifecycleScope.launch(Dispatchers.IO) {
             todo.gid = viewModel.getNewGid()
             viewModel.update(todo)
-            list = ArrayList(viewModel.getDayList(df.format(cal.time)))
+            list = ArrayList(viewModel.getDayList(df.format(cal.time), schedule_name))
             if (list.size == 0) {
                 tv_empty_today_item.visibility = View.VISIBLE
             } else {

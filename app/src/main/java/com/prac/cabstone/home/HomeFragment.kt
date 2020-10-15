@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.prac.cabstone.search.SearchActivity
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment {
 
     val viewModel: MainViewModel
-    private lateinit var mClSearch: ConstraintLayout
 
     constructor(vm: MainViewModel) {
         viewModel = vm
@@ -26,12 +26,14 @@ class HomeFragment : Fragment {
         savedInstanceState: Bundle?
     ): View? {
         var rootView : View = inflater.inflate(R.layout.fragment_home, container, false);
+        return rootView
+    }
 
-        mClSearch = rootView.findViewById(R.id.home_fg_cl_search)
-        mClSearch.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        home_fg_cl_search.setOnClickListener {
             var intent = Intent(context, SearchActivity::class.java)
             startActivity(intent)
         }
-        return rootView
     }
 }

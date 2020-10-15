@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+
     <Toolbar
         android:id="@+id/toolbar"
         android:layout_height="wrap_content"
@@ -13,15 +14,17 @@
         android:minHeight="?attr/actionBarSize"
         android:elevation="2dp">
 
-        <Button
+        <TextView
+            android:id="@+id/tv_schedule_name"
             android:fontFamily="@font/jungdong"
-            android:id="@+id/fragment_today_today_button"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today"
-            android:textSize="12dp"
+            android:text="day"
+            android:textColor="@color/black"
             android:layout_gravity="left"
+            android:textSize="18dp"
             />
+
         <ImageButton
             android:id="@+id/ibtn_prev_arrow"
             android:layout_width="40dp"
@@ -31,8 +34,8 @@
             android:background="@color/transparent"
             android:padding="13dp"
             android:layout_gravity="center"
-
             />
+
         <TextView
             android:fontFamily="@font/jungdong"
             android:id="@+id/tv_toolbar"
@@ -45,6 +48,7 @@
             android:layout_marginRight="5dp"
             android:textSize="14dp"
             />
+
         <TextView
             android:fontFamily="@font/jungdong"
             android:id="@+id/tv_fragment_today_day"
@@ -67,7 +71,6 @@
             android:layout_gravity="center"
 
             />
-
         <ImageButton
             android:id="@+id/btn_add"
             android:layout_width="40dp"
@@ -77,6 +80,16 @@
             android:background="@color/transparent"
             android:layout_marginRight="20dp"
             />
+        <Button
+            android:fontFamily="@font/jungdong"
+            android:id="@+id/fragment_today_today_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:textSize="12dp"
+            android:layout_gravity="right"
+            />
+
     </Toolbar>
     <LinearLayout
         android:id="@+id/ll_swiper"
