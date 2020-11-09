@@ -50,17 +50,33 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
-        android:orientation="horizontal">
-        <CheckBox
-            android:fontFamily="@font/jungdong"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:id="@+id/ll_checker"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            >
+            <CheckBox
+                android:id="@+id/cb_checker"
+                android:fontFamily="@font/jungdong"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:button="@drawable/selector"
+                android:textColor="@color/black"
+                android:padding="5dp"
+                />
+        </LinearLayout>
+        <TextView
             android:id="@+id/tv_contents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:button="@drawable/selector"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
             android:textColor="@color/black"
-            android:padding="5dp"
+            android:fontFamily="@font/jungdong"
+            android:text="content"
+            android:gravity="center_vertical"
+            android:textSize="14dp"
             />
     </LinearLayout>
 

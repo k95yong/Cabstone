@@ -78,7 +78,7 @@ class OcrFragment : Fragment() {
             .setDeniedMessage("카메라 권한 요청 거부")
             .setPermissions(
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.CAMERA
             )
             .check()

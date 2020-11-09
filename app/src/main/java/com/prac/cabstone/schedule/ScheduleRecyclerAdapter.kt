@@ -17,29 +17,31 @@ import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.softsquared.myapplication.db.Todo
 import kotlinx.android.synthetic.main.item_today.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ScheduleRecyclerAdapter(
     val context: Context,
     val scheduleFragment: ScheduleFragment,
     val curDate: String,
-    var items: ArrayList<Todo>,
+    var list: ArrayList<Todo>,
     val viewBinderHelper: ViewBinderHelper = ViewBinderHelper(),
     val viewModel: MainViewModel,
     val itemClick: (Todo) -> Unit
 ) :
     RecyclerView.Adapter<ScheduleRecyclerAdapter.ViewHolder>() {
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = list.size
     fun removeItem(position: Int) {
-        val del = items.get(position)
+        val del = list.get(position)
         viewModel.delete(del)
-        items.remove(del)
+        list.remove(del)
 
         notifyDataSetChanged()
     }
 
     fun modifyItem(position: Int) {
-        val mod = items.get(position)
+        val mod = list.get(position)
         scheduleFragment.showAlertDialog(2, mod)
         notifyDataSetChanged()
     }
@@ -49,16 +51,14 @@ class ScheduleRecyclerAdapter(
         viewBinderHelper.setOpenOnlyOne(true)
         viewBinderHelper.bind(
             holder.swipeRevealLayout,
-            items.get(position).id.toString()
+            list.get(position).id.toString()
         )
-        viewBinderHelper.closeLayout((items.get(position).id.toString()))
+        viewBinderHelper.closeLayout((list.get(position).id.toString()))
 
-        holder?.bind(items[position], context)
-        val btn_del = holder?.btn_del
-        if (btn_del != null) {
-            btn_del.setOnClickListener {
-
-                if (viewModel.getMyGroupSize(items.get(position).gid)!! > 1) {
+        holder?.bind(list[position], context)
+        if (holder.itemView.btn_del != null) {
+            holder.itemView.btn_del.setOnClickListener {
+                if (viewModel.getMyGroupSize(list.get(position).gid)!! > 1) {
                     val builder = AlertDialog.Builder(context)
                     val dialogView =
                         scheduleFragment.layoutInflater.inflate(R.layout.dialog_del_type, null)
@@ -70,8 +70,8 @@ class ScheduleRecyclerAdapter(
                             if (rbtn_type_one.isChecked()) {
                                 removeItem(position)
                             } else {
-                                viewModel.removeGroup(items.get(position).gid)
-                                items.remove(items.get(position))
+                                viewModel.removeGroup(list.get(position).gid)
+                                list.remove(list.get(position))
                                 notifyDataSetChanged()
                             }
                         }
@@ -83,37 +83,21 @@ class ScheduleRecyclerAdapter(
                 }
             }
         }
-        val btn_modify = holder?.btn_modify
-        btn_modify?.setOnClickListener {
 
+        holder.itemView.btn_modify.setOnClickListener {
             modifyItem(position)
         }
 
-        if (items[position].clear) {
-            holder.itemView.tv_contents.setTextColor(
-                Color.parseColor(
-                    "#bbbbbb"
-                )
-            )
-            holder.itemView.tv_contents.buttonTintList = context.getColorStateList(R.color.cleared)
-        } else {
-            holder.itemView.tv_contents.setTextColor(
-                Color.parseColor(
-                    "#000000"
-                )
-            )
-            holder.itemView.tv_contents.buttonTintList = context.getColorStateList(R.color.black)
-        }
-        holder.itemView.tv_contents.setOnClickListener {
-            items[position].clear = !items[position].clear
-            viewModel.update(items[position])
-            if (items[position].clear) {
+        holder.itemView.cb_checker.setOnClickListener {
+            list[position].clear = !list[position].clear
+            viewModel.update(list[position])
+            if (list[position].clear) {
                 holder.itemView.tv_contents.setTextColor(
                     Color.parseColor(
                         "#bbbbbb"
                     )
                 )
-                holder.itemView.tv_contents.buttonTintList =
+                holder.itemView.cb_checker.buttonTintList =
                     context.getColorStateList(R.color.cleared)
             } else {
                 holder.itemView.tv_contents.setTextColor(
@@ -121,9 +105,28 @@ class ScheduleRecyclerAdapter(
                         "#000000"
                     )
                 )
-                holder.itemView.tv_contents.buttonTintList =
+                holder.itemView.cb_checker.buttonTintList =
                     context.getColorStateList(R.color.black)
             }
+        }
+
+        if (list[position].clear) {
+            holder.itemView.tv_contents.setTextColor(
+                Color.parseColor(
+                    "#bbbbbb"
+                )
+            )
+            holder.itemView.cb_checker.buttonTintList = context.getColorStateList(R.color.cleared)
+        } else {
+            holder.itemView.cb_checker.setTextColor(
+                Color.parseColor(
+                    "#000000"
+                )
+            )
+            holder.itemView.cb_checker.buttonTintList = context.getColorStateList(R.color.black)
+        }
+        holder.itemView.ll_checker.setOnClickListener {
+
         }
     }
 
@@ -137,23 +140,54 @@ class ScheduleRecyclerAdapter(
     inner class ViewHolder(itemView: View?, itemClick: (Todo) -> Unit) :
 
         RecyclerView.ViewHolder(itemView!!) {
-        val contents = itemView?.findViewById<CheckBox>(R.id.tv_contents)
-        val btn_modify = itemView?.findViewById<Button>(R.id.btn_modify)
-        val btn_del = itemView?.findViewById<Button>(R.id.btn_del)
         val swipeRevealLayout = itemView?.findViewById<SwipeRevealLayout>(R.id.swipelayout)
 
 
         fun bind(item: Todo, context: Context) {
-            if (contents != null) {
-                contents.text = item.contents
-                contents.isChecked = item.clear
-            }
-
+            itemView.tv_contents.text = item.contents
+            itemView.cb_checker.isChecked = item.clear
             itemView.setOnClickListener { itemClick(item) }
         }
 
     }
 
+    fun deleteItem(idx: Int){
+//        viewModel.removeGroup(list[idx])
+//        list.remove(list[idx])
+        notifyDataSetChanged()
+    }
+
+    fun onItemMove(fromPosition: Int?, toPosition: Int?): Boolean {
+        fromPosition?.let {
+            toPosition?.let {
+                if (fromPosition < toPosition) {
+                    for (i in fromPosition until toPosition) {
+                        var tmpIdx = list[i + 1].idx
+                        list[i + 1].idx = list[i].idx
+                        list[i].idx = tmpIdx
+                        viewModel.update(list[i + 1])
+                        viewModel.update(list[i])
+
+                        Collections.swap(list, i, i + 1)
+
+                    }
+                } else {
+                    for (i in fromPosition downTo toPosition + 1) {
+                        var tmpIdx = list[i-1].idx
+                        list[i - 1].idx = list[i].idx
+                        list[i].idx = tmpIdx
+                        viewModel.update(list[i - 1])
+                        viewModel.update(list[i])
+
+                        Collections.swap(list, i, i - 1)
+                    }
+                }
+                notifyItemMoved(fromPosition, toPosition)
+                return true
+            }
+        }
+        return false
+    }
 }
 
 

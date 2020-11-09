@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Groups(
     var gname: String,
     var idx: Long,
+    var img_path: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 )

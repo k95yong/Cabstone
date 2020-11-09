@@ -2,16 +2,20 @@ package com.prac.cabstone.schedule
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.DOWN
+import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.softsquared.myapplication.db.Todo
@@ -34,6 +38,7 @@ class ScheduleFragment : Fragment {
     val arr_day = listOf("일", "월", "화", "수", "목", "금", "토")
     val viewModel: MainViewModel
     val schedule_name: String
+    lateinit var scheduleAdapter: ScheduleRecyclerAdapter
     constructor(vm: MainViewModel, name: String) {
         viewModel = vm
         cal = viewModel.getCalendar()
@@ -48,12 +53,14 @@ class ScheduleFragment : Fragment {
 
         tv_fragment_today_day.setText(arr_day[cal.get(Calendar.DAY_OF_WEEK) - 1])
         list = ArrayList(viewModel.getDayList(df.format(cal.time), schedule_name))
+
         if (list.size == 0) {
             tv_empty_today_item.visibility = View.VISIBLE
         } else {
             tv_empty_today_item.visibility = View.GONE
         }
-        rv_today_list.adapter = ScheduleRecyclerAdapter(
+
+        scheduleAdapter = ScheduleRecyclerAdapter(
             activity!!,
             this,
             today_date,
@@ -61,6 +68,17 @@ class ScheduleFragment : Fragment {
             viewModel = viewModel
         ) { item ->
         }
+        Log.e("loadview : ", list.toString())
+        /*
+        val callback = ScheduleDragManageAdapter(
+            scheduleAdapter, activity!!,
+            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT)
+                .or(ItemTouchHelper.RIGHT), -1
+        )
+        val helper = ItemTouchHelper(callback)
+        */
+        rv_today_list.adapter = scheduleAdapter
+        //helper.attachToRecyclerView(rv_today_list)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +92,27 @@ class ScheduleFragment : Fragment {
         tv_toolbar.setText(today_date)
         ll_swiper.setOnTouchListener(OnSwipeTouchListener())
         tv_fragment_today_day.setText(arr_day[cal.get(Calendar.DAY_OF_WEEK) - 1])
+
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(UP + DOWN, 0) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                scheduleAdapter.onItemMove(viewHolder?.adapterPosition, target?.adapterPosition);
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            }
+
+            override fun isLongPressDragEnabled(): Boolean {
+                return true
+            }
+        })
+
+        touchHelper.attachToRecyclerView(rv_today_list)
+
         loadView()
         ibtn_prev_arrow.setOnClickListener {
             cal.add(Calendar.DATE, -1)
@@ -104,7 +143,7 @@ class ScheduleFragment : Fragment {
             tv_empty_today_item.visibility = View.GONE
         }
         rv_today_list.layoutManager = lm
-        val adapter =
+        scheduleAdapter =
             ScheduleRecyclerAdapter(
                 activity!!,
                 this,
@@ -113,8 +152,7 @@ class ScheduleFragment : Fragment {
                 viewModel = viewModel
             ) { item ->
             }
-        rv_today_list.adapter = adapter
-        adapter.notifyDataSetChanged()
+        rv_today_list.adapter = scheduleAdapter
 
     }
 
@@ -267,7 +305,8 @@ class ScheduleFragment : Fragment {
                     false,
                     it,
                     gid,
-                    s_name
+                    s_name,
+                    viewModel.getTodoIdx(it)
                 )
             )
         }
@@ -276,6 +315,7 @@ class ScheduleFragment : Fragment {
         cal.set(Calendar.MONTH, selected_date.subSequence(5, 7).toString().toInt() - 1)
         cal.set(Calendar.DAY_OF_MONTH, selected_date.subSequence(8, 10).toString().toInt())
         tv_toolbar.setText(selected_date)
+
         loadView()
     }
 
@@ -286,7 +326,6 @@ class ScheduleFragment : Fragment {
         todo.contents = dialogText.text.toString()
         todo.day = dialogDate.text.toString()
 
-        // 비동기 처리, 수정은 resume시켜주지 않아도 잘 작동.. 둘의 차이점을 찾으려 하다가 다른 작업을 먼저 하기로 일단은 정했습니다!
         lifecycleScope.launch(Dispatchers.IO) {
             todo.gid = viewModel.getNewGid()
             viewModel.update(todo)
@@ -296,15 +335,15 @@ class ScheduleFragment : Fragment {
             } else {
                 tv_empty_today_item.visibility = View.GONE
             }
-            rv_today_list.adapter =
-                ScheduleRecyclerAdapter(
-                    activity!!,
-                    todayFragment,
-                    today_date,
-                    list,
-                    viewModel = viewModel
-                ) { item ->
-                }
+            scheduleAdapter = ScheduleRecyclerAdapter(
+                activity!!,
+                todayFragment,
+                today_date,
+                list,
+                viewModel = viewModel
+            ) { item ->
+            }
+            rv_today_list.adapter = scheduleAdapter
         }
         tv_toolbar.setText(todo.day)
 
@@ -312,6 +351,7 @@ class ScheduleFragment : Fragment {
         cal.set(Calendar.MONTH, todo.day.subSequence(5, 7).toString().toInt() - 1)
         cal.set(Calendar.DAY_OF_MONTH, todo.day.subSequence(8, 10).toString().toInt())
         tv_fragment_today_day.setText(arr_day[cal.get(Calendar.DAY_OF_WEEK) - 1])
+        rv_today_list.adapter?.notifyDataSetChanged()
     }
 
     inner class OnSwipeTouchListener : View.OnTouchListener {

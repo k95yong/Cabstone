@@ -10,6 +10,7 @@ data class Todo(
     var day: String = "",
     var gid: Long = -1,
     var g_name: String = "",
+    var idx: Long = 0,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 )

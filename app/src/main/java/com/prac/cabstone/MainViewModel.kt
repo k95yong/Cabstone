@@ -33,6 +33,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return db.groupsDao().getIdx()
     }
 
+    fun getTodoIdx(date: String): Long{
+        return db.todoDao().getIdx(date)
+    }
+
     fun getMainActivity(): MainActivity? {
         return mainActivity
     }
@@ -59,6 +63,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addTransaction(fragment: Fragment): Unit{
         transaction.add(R.id.main_frame_layout, fragment)
+    }
+
+    fun removeTransaction(fragment: Fragment): Unit{
+        transaction.remove(fragment)
     }
 
     fun hideTransaction(fragment: Fragment): Unit{

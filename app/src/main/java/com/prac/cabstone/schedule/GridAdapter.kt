@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.prac.cabstone.MainActivity
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
@@ -43,23 +44,26 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.Holder> {
             itemView.iv_pic.clipToOutline = true
             itemView.tv_title.text = data.gname
 
+
+            Glide.with(viewModel.getMainActivity()!!).load(data.img_path.toString()).into(itemView.iv_pic)
+
             itemView.setOnClickListener {
                 viewModel.setTransaction()
                 val mainActivity = viewModel.getMainActivity()
                 if(mainActivity?.scheduleFragment == null){
                     mainActivity?.scheduleFragment = ScheduleFragment(viewModel, data.gname)
                     viewModel.addTransaction(mainActivity?.scheduleFragment!!)
+                }else{
+                    viewModel.removeTransaction(mainActivity.scheduleFragment!!)
+                    mainActivity.scheduleFragment = ScheduleFragment(viewModel, data.gname)
+                    viewModel.addTransaction(mainActivity?.scheduleFragment!!)
                 }
                 viewModel.showTransaction(mainActivity?.scheduleFragment!!)
                 mainActivity?.cur_frag = 5
             }
-
-
         }
     }
     fun deleteItem(idx: Int){
-//        viewModel.removeGroup(list[idx])
-//        list.remove(list[idx])
         notifyDataSetChanged()
     }
 

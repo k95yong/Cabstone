@@ -17,12 +17,14 @@
         <TextView
             android:id="@+id/tv_schedule_name"
             android:fontFamily="@font/jungdong"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:text="day"
             android:textColor="@color/black"
             android:layout_gravity="left"
             android:textSize="18dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             />
 
         <ImageButton
@@ -71,15 +73,7 @@
             android:layout_gravity="center"
 
             />
-        <ImageButton
-            android:id="@+id/btn_add"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="right"
-            android:src="@drawable/ic_plus"
-            android:background="@color/transparent"
-            android:layout_marginRight="20dp"
-            />
+
         <Button
             android:fontFamily="@font/jungdong"
             android:id="@+id/fragment_today_today_button"
@@ -88,10 +82,11 @@
             android:text="Today"
             android:textSize="12dp"
             android:layout_gravity="right"
+            android:layout_marginRight="15dp"
             />
 
     </Toolbar>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_swiper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -116,7 +111,25 @@
             android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            >
+            <ImageView
+                android:padding="10dp"
+                android:background="@drawable/theme_round"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_plus_sky"
+                android:scaleType="fitXY"/>
+        </FrameLayout>
+    </RelativeLayout>
 
 
 

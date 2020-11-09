@@ -1,5 +1,7 @@
 package com.prac.cabstone.schedule
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,11 +18,14 @@ import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.softsquared.myapplication.db.Groups
 import kotlinx.android.synthetic.main.custom_dialog.view.*
+import kotlinx.android.synthetic.main.custom_dialog.view.et_dialog_contents
 import kotlinx.android.synthetic.main.fragment_schedule_choice.*
+import kotlinx.android.synthetic.main.schedule_add_dialog.view.*
 
 
 class ScheduleChoiceFragment : Fragment {
     private val viewModel: MainViewModel
+    lateinit var dialogView: View
     private lateinit var gridAdapter: GridAdapter
     constructor(viewModel: MainViewModel){
         this.viewModel = viewModel
@@ -46,9 +51,6 @@ class ScheduleChoiceFragment : Fragment {
         super.onViewCreated(view, savedInstanceState)
         gridAdapter = GridAdapter(viewModel)
 
-
-
-
         val manager = GridLayoutManager(context, 4)
         //val manager = LinearLayoutManager(context)
         val callback = DragManageAdapter(
@@ -62,7 +64,7 @@ class ScheduleChoiceFragment : Fragment {
         helper.attachToRecyclerView(schedule_list)
 
         btn_add_schedule.setOnClickListener {
-            val dialogView = layoutInflater.inflate(R.layout.schedule_add_dialog, null)
+            dialogView = layoutInflater.inflate(R.layout.schedule_add_dialog, null)
             val builder = AlertDialog.Builder(activity!!)
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
@@ -72,19 +74,32 @@ class ScheduleChoiceFragment : Fragment {
                     viewModel.insert(
                         Groups(
                             dialogView.et_dialog_contents.text.toString(),
-                            viewModel.getGroupIdx() + 1
+                            viewModel.getGroupIdx() + 1,
+                            dialogView.et_dialog_sel_image.text.toString()
                         )
                     )
                     gridAdapter.list = viewModel.getAllGList() as ArrayList<Groups>
                     gridAdapter.notifyDataSetChanged()
-
                 }
             }
                 .setNegativeButton("취소") { dialogInterface, i ->
                 }
                 .show()
-
+            dialogView.et_dialog_sel_image.setOnClickListener {
+                val intent = Intent(activity, ChoicePicActivity::class.java)
+                startActivityForResult(intent, 100)
+            }
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                100->{
+                    dialogView.et_dialog_sel_image.setText(data!!.getStringExtra("img_path"))
+                }
+            }
+        }
+    }
 }

@@ -18,16 +18,23 @@ class DragManageAdapter(adapter: GridAdapter, context: Context, dragDirs: Int, s
         target: RecyclerView.ViewHolder
     ): Boolean {
         dragAdapter.swapItems(viewHolder.adapterPosition, target.adapterPosition)
+        Log.e("onmove", "moved")
         return true
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
-        Log.e("onSelectedChanged", "onSelectedChanged")
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         dragAdapter.deleteItem(viewHolder.adapterPosition)
         Log.e("holderPos", viewHolder.adapterPosition.toString())
         Log.e("direction", direction.toString())
+    }
+
+    override fun getSwipeDirs(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        return 0
     }
 }
