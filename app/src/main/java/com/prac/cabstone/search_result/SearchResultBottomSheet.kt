@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prac.cabstone.GlideApp
+
 import com.prac.cabstone.R
 import com.prac.cabstone.models.ResponseGetInfoForAreaData
 import com.prac.cabstone.search_detail.SearchDetailActivity
