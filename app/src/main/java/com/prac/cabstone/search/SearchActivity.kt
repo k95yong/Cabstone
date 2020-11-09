@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.R
 import com.prac.cabstone.models.ResponseGetAreaCode
+import com.prac.cabstone.search_result.SearchResultActivity
 import kotlinx.android.synthetic.main.activity_search.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,6 +64,10 @@ class SearchActivity : BaseActivity() {
             // Get the dialog selected item
             val selected = list[which]
             val selectedCode = responseGetAreaCode.getData()[which].getCode()
+
+            var intent = Intent(this@SearchActivity, SearchResultActivity::class.java)
+            intent.putExtra("area_code", selectedCode)
+            startActivity(intent)
 
             showCustomToast(selected + "선택, " + selectedCode)
         }

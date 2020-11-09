@@ -6,6 +6,9 @@ class ResponseGetInfoForAreaData(
     @SerializedName("addr1")
     private var addr1: String,
 
+    @SerializedName("addr2")
+    private var addr2: String,
+
     @SerializedName("areacode")
     private var areacode: Int,
 
@@ -31,10 +34,13 @@ class ResponseGetInfoForAreaData(
     private var readcount: Int,
 
     @SerializedName("title")
-    private var title: String,
+    private var title: String
 
+    /*
     @SerializedName("zipcode")
     private var zipcode: String
+
+     */
 ) {
     fun getAddr1() : String {
         return this.addr1
@@ -66,7 +72,10 @@ class ResponseGetInfoForAreaData(
     fun getTitle() : String {
         return this.title
     }
+    /*
     fun getZipCode() : String {
         return this.zipcode
     }
+
+     */
 }
