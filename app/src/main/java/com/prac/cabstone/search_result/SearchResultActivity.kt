@@ -169,7 +169,8 @@ class SearchResultActivity : BaseActivity(), OnMapReadyCallback {
                         if (!withinSightMarker(currentPosition, latLng)) continue
                         val marker = Marker().apply {
                             setOnClickListener {
-                                println("마커클릭 " + markerPosition.getTitle())
+                                var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
                                 true
                             }
                         }

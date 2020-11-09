@@ -22,9 +22,8 @@
         android:theme="@style/Theme.Design.NoActionBar">
         <activity android:name=".search_detail.SearchDetailActivity"></activity>
         <activity android:name=".search_result.SearchResultActivity" />
-        <activity android:name=".schedule.ScheduleActivity" />
         <activity android:name=".search.SearchActivity" />
-
+        <activity android:name=".schedule.ChoicePicActivity" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.prac.cabstone"
