@@ -73,9 +73,7 @@ class CurrentLocationActivity : BaseActivity(), OnMapReadyCallback {
         showProgressDialog()
         val api = CurrentLocationAPI.create()
 
-        var requestGetResultForCurrent = RequestGetResultForCurrent(intent.getDoubleExtra("lon", 0.0), intent.getDoubleExtra("lat", 0.0), 10000);
-
-        api.getResultForCurrent(requestGetResultForCurrent).enqueue(object :
+        api.getResultForCurrent(intent.getDoubleExtra("lon", 0.0), intent.getDoubleExtra("lat", 0.0), 10000).enqueue(object :
             Callback<ResponseGetResultForCurrent> {
             override fun onResponse(call: Call<ResponseGetResultForCurrent>, response: Response<ResponseGetResultForCurrent>) {
                 hideProgressDialog()

@@ -14,10 +14,17 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment {
 
-    val viewModel: MainViewModel
+    companion object{
 
-    constructor(vm: MainViewModel) {
-        viewModel = vm
+        fun newInstance():HomeFragment{
+            val args: Bundle = Bundle()
+            val fragment = HomeFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    constructor() {
     }
 
     override fun onCreateView(

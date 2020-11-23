@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.showTransaction(homeFragment!!)
                         cur_frag = 1
                     } else {
-                        homeFragment = HomeFragment(viewModel)
+                        homeFragment = HomeFragment.newInstance()
                         viewModel.addTransaction(homeFragment!!)
                         viewModel.showTransaction(homeFragment!!)
                         cur_frag = 1

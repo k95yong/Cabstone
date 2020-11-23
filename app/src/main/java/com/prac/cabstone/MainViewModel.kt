@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.softsquared.myapplication.db.AppDatabase
 import com.softsquared.myapplication.db.Groups
 import com.softsquared.myapplication.db.Todo
+import java.io.Serializable
 import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
