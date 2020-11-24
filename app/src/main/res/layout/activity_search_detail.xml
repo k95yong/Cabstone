@@ -41,12 +41,13 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/add_to_schedule"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:text="즐겨찾기 추가"
+        android:text="일정에 추가"
         android:textColor="@color/white"
         android:background="@color/black"/>
 

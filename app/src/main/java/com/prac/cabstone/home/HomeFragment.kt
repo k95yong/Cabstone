@@ -39,7 +39,8 @@ class HomeFragment : Fragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         home_fg_cl_search.setOnClickListener {
-            var intent = Intent(context, SearchActivity::class.java)
+            val searchActivity = SearchActivity()
+            var intent = Intent(context, searchActivity::class.java)
             startActivity(intent)
         }
     }

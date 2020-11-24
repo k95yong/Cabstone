@@ -10,14 +10,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.softsquared.myapplication.db.Groups
-import kotlinx.android.synthetic.main.custom_dialog.view.*
 import kotlinx.android.synthetic.main.custom_dialog.view.et_dialog_contents
 import kotlinx.android.synthetic.main.fragment_schedule_choice.*
 import kotlinx.android.synthetic.main.schedule_add_dialog.view.*
@@ -86,20 +83,23 @@ class ScheduleChoiceFragment : Fragment {
                 }
                 .show()
             dialogView.et_dialog_sel_image.setOnClickListener {
-                val intent = Intent(activity, ChoicePicActivity::class.java)
-                startActivityForResult(intent, 100)
+                //val intent = Intent(activity, ChoicePicActivity::class.java)
+                //startActivityForResult(intent, 100)
+                openGalleryForImage()
             }
         }
     }
 
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, 100)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            when(requestCode){
-                100->{
-                    dialogView.et_dialog_sel_image.setText(data!!.getStringExtra("img_path"))
-                }
-            }
+        if (resultCode == Activity.RESULT_OK && requestCode == 100){
+            dialogView.et_dialog_sel_image.setText(data?.data.toString())
         }
     }
 }

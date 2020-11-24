@@ -28,6 +28,7 @@
         <activity android:name=".search_result.SearchResultActivity" />
         <activity android:name=".search.SearchActivity" />
         <activity android:name=".schedule.ChoicePicActivity" />
+        <activity android:name=".schedule.ScheduleChoiceDialogActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

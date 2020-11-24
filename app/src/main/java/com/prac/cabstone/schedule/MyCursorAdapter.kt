@@ -35,12 +35,6 @@ class MyCursorAdapter : CursorAdapter {
         Log.e("uri:", uri)
 
         // 이미지를 비동기로 부드럽게 로딩
-        Glide.with(context!!).load(uri).placeholder(R.drawable.ic_search).into(imageView)
-
-//        val decode = ImageDecoder.createSource(
-//            context!!.contentResolver,
-//            Uri.parse(uri))
-//        val bitmap = ImageDecoder.decodeBitmap(decode)
-//        imageView.setImageBitmap(bitmap)
+        Glide.with(context!!).load(uri).into(imageView)
     }
 }

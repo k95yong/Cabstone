@@ -12,6 +12,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.prac.cabstone.BaseActivity
+import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
 import com.prac.cabstone.models.ResponseGetInfoForArea
 import com.prac.cabstone.models.ResponseGetInfoForAreaData
@@ -24,6 +25,7 @@ import kotlin.math.abs
 
 
 class SearchResultActivity : BaseActivity(), OnMapReadyCallback {
+
 
     var mMarkerList: ArrayList<ResponseGetInfoForAreaData> = ArrayList()
     // 마커 정보 저장시킬 변수들 선언

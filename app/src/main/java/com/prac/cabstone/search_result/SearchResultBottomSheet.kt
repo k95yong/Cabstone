@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.prac.cabstone.GlideApp
+import com.prac.cabstone.MainViewModel
 
 import com.prac.cabstone.R
 import com.prac.cabstone.models.ResponseGetInfoForAreaData
@@ -24,7 +25,6 @@ class SearchResultBottomSheet(var mContext: Context, var responseGetInfoForAreaD
     lateinit var mTvLocation : TextView
     lateinit var mImageView : ImageView
     lateinit var mBtnDetail : Button
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +52,11 @@ class SearchResultBottomSheet(var mContext: Context, var responseGetInfoForAreaD
 
         mBtnDetail.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View) {
+                val searchDetailActivity = SearchDetailActivity()
                 var intent = Intent(mContext, SearchDetailActivity::class.java)
                 intent.putExtra("content_id", responseGetInfoForAreaData.getContentId())
                 mContext.startActivity(intent)
+                dismiss()
             }
         })
 
