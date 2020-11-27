@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.EditText
@@ -37,6 +38,11 @@ class SearchDetailActivity : BaseActivity() {
     lateinit var search_title: String
     lateinit var dialogView: View
     lateinit var viewModel: MainViewModel
+    var addr1 = ""
+    var firstImage = ""
+    var contentId = 1
+    var mapX = 0.0
+    var mapY = 0.0
     var g_id: Long? = null
     var g_name: String? = null
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -129,7 +135,12 @@ class SearchDetailActivity : BaseActivity() {
                                         it,
                                         tmpgid,
                                         g_name!!,
-                                        viewModel.getTodoIdx(it)
+                                        viewModel.getTodoIdx(it),
+                                        mapX,
+                                        mapY,
+                                        firstImage = firstImage,
+                                        addr1 = addr1,
+                                        contentId = contentId
                                     )
                                 )
                             }
@@ -157,10 +168,16 @@ class SearchDetailActivity : BaseActivity() {
                 if (responseGetSearchDetail != null) {
                     search_title = responseGetSearchDetail.getData().getTitle()
                     search_detail_tv_title.text = search_title
-                    search_detail_tv_location.text = responseGetSearchDetail.getData().getAddr1()
-                    GlideApp.with(this@SearchDetailActivity).load(responseGetSearchDetail.getData().getFirstimage())
+                    addr1 = responseGetSearchDetail.getData().getAddr1()
+                    search_detail_tv_location.text = addr1
+                    firstImage = responseGetSearchDetail.getData().getFirstimage()
+                    GlideApp.with(this@SearchDetailActivity).load(firstImage)
                         .centerCrop()
                         .into(search_detail_iv_image)
+                    mapX = responseGetSearchDetail.getData().getMapx()
+                    mapY = responseGetSearchDetail.getData().getMapy()
+                    contentId = responseGetSearchDetail.getData().getContentid()
+
                 }
             }
 

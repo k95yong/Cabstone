@@ -159,7 +159,6 @@ class SearchResultActivity : BaseActivity(), OnMapReadyCallback {
                 if (responseGetInfoForArea != null) {
                     for (i in responseGetInfoForArea.getData()) {
                         mMarkerList.add(i)
-
                     }
                     showCustomToast("검색완료")
 

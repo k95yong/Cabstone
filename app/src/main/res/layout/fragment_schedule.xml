@@ -129,6 +129,24 @@
                 android:src="@drawable/ic_plus_sky"
                 android:scaleType="fitXY"/>
         </FrameLayout>
+        <FrameLayout
+            android:id="@+id/btn_flow_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            >
+            <ImageView
+                android:padding="10dp"
+                android:background="@drawable/theme_round"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_check_mark"
+                android:scaleType="fitXY"/>
+        </FrameLayout>
     </RelativeLayout>
 
 

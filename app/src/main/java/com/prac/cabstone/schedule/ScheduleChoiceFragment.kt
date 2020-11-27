@@ -28,12 +28,10 @@ class ScheduleChoiceFragment : Fragment {
         this.viewModel = viewModel
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_schedule_choice, container, false)
     }
 
@@ -83,8 +81,6 @@ class ScheduleChoiceFragment : Fragment {
                 }
                 .show()
             dialogView.et_dialog_sel_image.setOnClickListener {
-                //val intent = Intent(activity, ChoicePicActivity::class.java)
-                //startActivityForResult(intent, 100)
                 openGalleryForImage()
             }
         }

@@ -19,7 +19,6 @@ interface SearchDetailAPI {
     fun getSearchDetail(@Path("id") id: Int): Call<ResponseGetSearchDetail>
 
     companion object {
-
         fun create(): SearchDetailAPI {
             val jwtToken = ApplicationClass.prefs.myJWT
 

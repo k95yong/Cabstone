@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     var cur_frag = 1
 
     lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.showTransaction(flowFragment!!)
                         cur_frag = 3
                     } else {
-                        flowFragment = FlowFragment()
+                        flowFragment = FlowFragment(viewModel)
                         viewModel.addTransaction(flowFragment!!)
                         viewModel.showTransaction(flowFragment!!)
                         cur_frag = 3

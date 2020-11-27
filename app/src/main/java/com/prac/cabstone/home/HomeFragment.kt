@@ -13,9 +13,7 @@ import com.prac.cabstone.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment {
-
     companion object{
-
         fun newInstance():HomeFragment{
             val args: Bundle = Bundle()
             val fragment = HomeFragment()
@@ -23,10 +21,8 @@ class HomeFragment : Fragment {
             return fragment
         }
     }
-
     constructor() {
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

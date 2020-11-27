@@ -1,6 +1,7 @@
 package com.prac.cabstone.schedule
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -69,16 +70,8 @@ class ScheduleFragment : Fragment {
         ) { item ->
         }
         Log.e("loadview : ", list.toString())
-        /*
-        val callback = ScheduleDragManageAdapter(
-            scheduleAdapter, activity!!,
-            ItemTouchHelper.UP.or(ItemTouchHelper.DOWN).or(ItemTouchHelper.LEFT)
-                .or(ItemTouchHelper.RIGHT), -1
-        )
-        val helper = ItemTouchHelper(callback)
-        */
+
         rv_today_list.adapter = scheduleAdapter
-        //helper.attachToRecyclerView(rv_today_list)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,6 +107,7 @@ class ScheduleFragment : Fragment {
         touchHelper.attachToRecyclerView(rv_today_list)
 
         loadView()
+
         ibtn_prev_arrow.setOnClickListener {
             cal.add(Calendar.DATE, -1)
             loadView()
@@ -129,6 +123,12 @@ class ScheduleFragment : Fragment {
         }
         btn_add.setOnClickListener {
             showAlertDialog(1, Todo("-", false, "-", viewModel.getNewGid()))
+        }
+        btn_flow_check.setOnClickListener {
+            var intent = Intent(context, FlowActivity::class.java)
+            intent.putExtra("date", today_date)
+            intent.putExtra("schedule_name", schedule_name)
+            startActivity(intent)
         }
     }
 
