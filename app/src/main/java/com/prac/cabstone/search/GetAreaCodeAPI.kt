@@ -16,6 +16,21 @@ interface GetAreaCodeAPI {
     @GET("/ko/area-code")
     fun getAreaCode(): Call<ResponseGetAreaCode>
 
+    @GET("/en/area-code")
+    fun getAreaCode_en(): Call<ResponseGetAreaCode>
+
+    @GET("/jp/area-code")
+    fun getAreaCode_jp(): Call<ResponseGetAreaCode>
+
+    @GET("/ch/area-code")
+    fun getAreaCode_ch(): Call<ResponseGetAreaCode>
+
+    @GET("/ge/area-code")
+    fun getAreaCode_ge(): Call<ResponseGetAreaCode>
+
+    @GET("/sp/area-code")
+    fun getAreaCode_sp(): Call<ResponseGetAreaCode>
+
     companion object {
 
         fun create(): GetAreaCodeAPI {

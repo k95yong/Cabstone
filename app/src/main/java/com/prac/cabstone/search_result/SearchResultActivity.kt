@@ -12,6 +12,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.overlay.OverlayImage
+import com.prac.cabstone.ApplicationClass
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
@@ -32,10 +33,13 @@ class SearchResultActivity : BaseActivity(), OnMapReadyCallback {
     // 마커 정보 저장시킬 변수들 선언
     private var activeMarkers: Vector<Marker>? = null
     lateinit var mNaverMap : NaverMap
+    private var mLanguage: String? = "ko"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_result)
+
+        mLanguage = ApplicationClass.prefs.myLANGUAGE
 
         getResult()
 
@@ -154,43 +158,242 @@ class SearchResultActivity : BaseActivity(), OnMapReadyCallback {
         showProgressDialog()
         val api = GetInfoForAreaCodeAPI.create()
 
-        api.getResultForAreaCode(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
-            override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
-                hideProgressDialog()
-                var responseGetInfoForArea = response.body()
-                if (responseGetInfoForArea != null) {
-                    for (i in responseGetInfoForArea.getData()) {
-                        mMarkerList.add(i)
-                    }
-                    showCustomToast("검색완료")
+        when (mLanguage) {
+            "ko" -> {
+                api.getResultForAreaCode(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
 
-                    freeActiveMarkers()
-                    // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
-                    val currentPosition: LatLng = getCurrentPosition(mNaverMap)
-                    for (markerPosition in mMarkerList) {
-                        val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
-                        if (!withinSightMarker(currentPosition, latLng)) continue
-                        val marker = Marker().apply {
-                            setOnClickListener {
-                                var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
-                                searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
-                                true
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
                             }
                         }
-                        marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
-                        marker.position = latLng!!
-                        marker.map = mNaverMap
-                        activeMarkers?.add(marker)
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
-                hideProgressDialog()
-                showCustomToast(resources.getString(R.string.network_error))
-                t.printStackTrace()
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
             }
-        })
+            "en" -> {
+                api.getResultForAreaCode_en(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "jp" -> {
+                api.getResultForAreaCode_jp(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ch" -> {
+                api.getResultForAreaCode_ch(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ge" -> {
+                api.getResultForAreaCode_ge(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "sp" -> {
+                api.getResultForAreaCode_sp(intent.getIntExtra("area_code", 0)).enqueue(object : Callback<ResponseGetInfoForArea> {
+                    override fun onResponse(call: Call<ResponseGetInfoForArea>, response: Response<ResponseGetInfoForArea>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = SearchResultBottomSheet(this@SearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetInfoForArea>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+        }
     }
 
 

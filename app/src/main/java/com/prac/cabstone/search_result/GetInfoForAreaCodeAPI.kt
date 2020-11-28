@@ -18,6 +18,21 @@ interface GetInfoForAreaCodeAPI {
     @GET("/ko/area-based-list/{areacode}")
     fun getResultForAreaCode(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
 
+    @GET("/en/area-based-list/{areacode}")
+    fun getResultForAreaCode_en(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
+
+    @GET("/jp/area-based-list/{areacode}")
+    fun getResultForAreaCode_jp(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
+
+    @GET("/ch/area-based-list/{areacode}")
+    fun getResultForAreaCode_ch(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
+
+    @GET("/ge/area-based-list/{areacode}")
+    fun getResultForAreaCode_ge(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
+
+    @GET("/sp/area-based-list/{areacode}")
+    fun getResultForAreaCode_sp(@Path("areacode") areacode: Int): Call<ResponseGetInfoForArea>
+
     companion object {
 
         fun create(): GetInfoForAreaCodeAPI {

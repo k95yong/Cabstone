@@ -11,10 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
-import com.prac.cabstone.BaseActivity
-import com.prac.cabstone.GlideApp
-import com.prac.cabstone.MainViewModel
-import com.prac.cabstone.R
+import com.prac.cabstone.*
 import com.prac.cabstone.models.ResponseGetSearchDetail
 import com.prac.cabstone.schedule.ScheduleChoiceDialogActivity
 import com.softsquared.myapplication.db.Todo
@@ -45,6 +42,7 @@ class SearchDetailActivity : BaseActivity() {
     var mapY = 0.0
     var g_id: Long? = null
     var g_name: String? = null
+    private var mLanguage: String? = "ko"
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 100){
@@ -57,6 +55,9 @@ class SearchDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_detail)
+
+        mLanguage = ApplicationClass.prefs.myLANGUAGE
+
         getSearchDetail()
 
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
@@ -160,33 +161,187 @@ class SearchDetailActivity : BaseActivity() {
         showProgressDialog()
         val api = SearchDetailAPI.create()
 
-        api.getSearchDetail(intent.getIntExtra("content_id", 0)).enqueue(object :
-            Callback<ResponseGetSearchDetail> {
-            override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
-                hideProgressDialog()
-                var responseGetSearchDetail = response.body()
-                if (responseGetSearchDetail != null) {
-                    search_title = responseGetSearchDetail.getData().getTitle()
-                    search_detail_tv_title.text = search_title
-                    addr1 = responseGetSearchDetail.getData().getAddr1()
-                    search_detail_tv_location.text = "주소 : $addr1"
-                    firstImage = responseGetSearchDetail.getData().getFirstimage()
-                    search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
-                    GlideApp.with(this@SearchDetailActivity).load(firstImage)
-                        .centerCrop()
-                        .into(search_detail_iv_image)
-                    mapX = responseGetSearchDetail.getData().getMapx()
-                    mapY = responseGetSearchDetail.getData().getMapy()
-                    contentId = responseGetSearchDetail.getData().getContentid()
+        when (mLanguage) {
+            "ko" -> {
+                api.getSearchDetail(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
 
-                }
-            }
+                        }
+                    }
 
-            override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
-                hideProgressDialog()
-                showCustomToast(resources.getString(R.string.network_error))
-                t.printStackTrace()
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
             }
-        })
+            "en" -> {
+                api.getSearchDetail_en(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "jp" -> {
+                api.getSearchDetail_jp(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ch" -> {
+                api.getSearchDetail_ch(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ge" -> {
+                api.getSearchDetail_ge(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "sp" -> {
+                api.getSearchDetail_sp(intent.getIntExtra("content_id", 0)).enqueue(object :
+                    Callback<ResponseGetSearchDetail> {
+                    override fun onResponse(call: Call<ResponseGetSearchDetail>, response: Response<ResponseGetSearchDetail>) {
+                        hideProgressDialog()
+                        var responseGetSearchDetail = response.body()
+                        if (responseGetSearchDetail != null) {
+                            search_title = responseGetSearchDetail.getData().getTitle()
+                            search_detail_tv_title.text = search_title
+                            addr1 = responseGetSearchDetail.getData().getAddr1()
+                            search_detail_tv_location.text = "주소 : $addr1"
+                            firstImage = responseGetSearchDetail.getData().getFirstimage()
+                            search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
+                            GlideApp.with(this@SearchDetailActivity).load(firstImage)
+                                .centerCrop()
+                                .into(search_detail_iv_image)
+                            mapX = responseGetSearchDetail.getData().getMapx()
+                            mapY = responseGetSearchDetail.getData().getMapy()
+                            contentId = responseGetSearchDetail.getData().getContentid()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetSearchDetail>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+        }
     }
 }

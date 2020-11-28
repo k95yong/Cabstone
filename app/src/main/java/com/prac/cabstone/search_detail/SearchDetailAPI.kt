@@ -18,6 +18,21 @@ interface SearchDetailAPI {
     @GET("/ko/detail/{id}")
     fun getSearchDetail(@Path("id") id: Int): Call<ResponseGetSearchDetail>
 
+    @GET("/en/detail/{id}")
+    fun getSearchDetail_en(@Path("id") id: Int): Call<ResponseGetSearchDetail>
+
+    @GET("/jp/detail/{id}")
+    fun getSearchDetail_jp(@Path("id") id: Int): Call<ResponseGetSearchDetail>
+
+    @GET("/ch/detail/{id}")
+    fun getSearchDetail_ch(@Path("id") id: Int): Call<ResponseGetSearchDetail>
+
+    @GET("/ge/detail/{id}")
+    fun getSearchDetail_ge(@Path("id") id: Int): Call<ResponseGetSearchDetail>
+
+    @GET("/sp/detail/{id}")
+    fun getSearchDetail_sp(@Path("id") id: Int): Call<ResponseGetSearchDetail>
+
     companion object {
         fun create(): SearchDetailAPI {
             val jwtToken = ApplicationClass.prefs.myJWT

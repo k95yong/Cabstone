@@ -20,6 +20,31 @@ interface KeywordSearchResultAPI {
         @Query("keyword") mapX : String
     ): Call<ResponseGetResultForKeyword>
 
+    @GET("/en/search-keyword")
+    fun getResultForKeyword_en(
+        @Query("keyword") mapX : String
+    ): Call<ResponseGetResultForKeyword>
+
+    @GET("/jp/search-keyword")
+    fun getResultForKeyword_jp(
+        @Query("keyword") mapX : String
+    ): Call<ResponseGetResultForKeyword>
+
+    @GET("/ch/search-keyword")
+    fun getResultForKeyword_ch(
+        @Query("keyword") mapX : String
+    ): Call<ResponseGetResultForKeyword>
+
+    @GET("/ge/search-keyword")
+    fun getResultForKeyword_ge(
+        @Query("keyword") mapX : String
+    ): Call<ResponseGetResultForKeyword>
+
+    @GET("/sp/search-keyword")
+    fun getResultForKeyword_sp(
+        @Query("keyword") mapX : String
+    ): Call<ResponseGetResultForKeyword>
+
     companion object {
 
         fun create(): KeywordSearchResultAPI {

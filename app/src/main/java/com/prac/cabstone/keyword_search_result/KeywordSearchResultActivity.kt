@@ -9,6 +9,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
+import com.prac.cabstone.ApplicationClass
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.R
 import com.prac.cabstone.current_location_result.CurrentLocationAPI
@@ -29,10 +30,13 @@ class KeywordSearchResultActivity : BaseActivity(), OnMapReadyCallback {
     var mMarkerList: ArrayList<ResponseGetResultForKeywordData> = ArrayList()
     private var activeMarkers: Vector<Marker>? = null
     lateinit var mNaverMap : NaverMap
+    private var mLanguage: String? = "ko"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keyword_search_result)
+
+        mLanguage = ApplicationClass.prefs.myLANGUAGE
 
         getResult()
 
@@ -108,43 +112,248 @@ class KeywordSearchResultActivity : BaseActivity(), OnMapReadyCallback {
         showProgressDialog()
         val api = KeywordSearchResultAPI.create()
 
-        api.getResultForKeyword(intent.getStringExtra("keyword")).enqueue(object :
-            Callback<ResponseGetResultForKeyword> {
-            override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
-                hideProgressDialog()
-                var responseGetInfoForArea = response.body()
-                if (responseGetInfoForArea != null) {
-                    for (i in responseGetInfoForArea.getData()) {
-                        mMarkerList.add(i)
+        // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+        when (mLanguage) {
+            "ko" -> {
+                api.getResultForKeyword(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
 
-                    }
-                    showCustomToast("검색완료")
+                            }
+                            showCustomToast("검색완료")
 
-                    freeActiveMarkers()
-                    // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
-                    val currentPosition: LatLng = getCurrentPosition(mNaverMap)
-                    for (markerPosition in mMarkerList) {
-                        val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
-                        if (!withinSightMarker(currentPosition, latLng)) continue
-                        val marker = Marker().apply {
-                            setOnClickListener {
-                                var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
-                                searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
-                                true
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
                             }
                         }
-                        marker.position = latLng!!
-                        marker.map = mNaverMap
-                        activeMarkers?.add(marker)
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
-                hideProgressDialog()
-                showCustomToast(resources.getString(R.string.network_error))
-                t.printStackTrace()
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
             }
-        })
+            "en" -> {
+                api.getResultForKeyword_en(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "jp" -> {
+                api.getResultForKeyword_jp(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ch" -> {
+                api.getResultForKeyword_ch(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ge" -> {
+                api.getResultForKeyword_ge(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "sp" -> {
+                api.getResultForKeyword_sp(intent.getStringExtra("keyword")).enqueue(object :
+                    Callback<ResponseGetResultForKeyword> {
+                    override fun onResponse(call: Call<ResponseGetResultForKeyword>, response: Response<ResponseGetResultForKeyword>) {
+                        hideProgressDialog()
+                        var responseGetInfoForArea = response.body()
+                        if (responseGetInfoForArea != null) {
+                            for (i in responseGetInfoForArea.getData()) {
+                                mMarkerList.add(i)
+
+                            }
+                            showCustomToast("검색완료")
+
+                            freeActiveMarkers()
+                            // 정의된 마커위치들중 가시거리 내에있는것들만 마커 생성
+                            val currentPosition: LatLng = getCurrentPosition(mNaverMap)
+                            for (markerPosition in mMarkerList) {
+                                val latLng = LatLng(markerPosition.getMapY(), markerPosition.getMapX())
+                                if (!withinSightMarker(currentPosition, latLng)) continue
+                                val marker = Marker().apply {
+                                    setOnClickListener {
+                                        var searchResultBottomSheet = KeywordSearchResultBottomSheet(this@KeywordSearchResultActivity, markerPosition)
+                                        searchResultBottomSheet.show(supportFragmentManager,searchResultBottomSheet.tag)
+                                        true
+                                    }
+                                }
+                                marker.position = latLng!!
+                                marker.map = mNaverMap
+                                activeMarkers?.add(marker)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetResultForKeyword>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+        }
     }
 }

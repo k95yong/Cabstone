@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.prac.cabstone.ApplicationClass
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.GpsTracker
 import com.prac.cabstone.R
@@ -34,10 +35,58 @@ class SearchActivity : BaseActivity() {
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private val PERMISSIONS_REQUEST_CODE = 100
     private lateinit var mGeocoder : Geocoder
+    private var mLanguage: String? = "ko"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        mLanguage = ApplicationClass.prefs.myLANGUAGE
+
+        when (mLanguage) {
+            "ko" -> {
+                search_et_keyword.hint = resources.getString(R.string.search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.cancel)
+            }
+            "en" -> {
+                search_et_keyword.hint = resources.getString(R.string.en_search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.en_location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.en_current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.en_keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.en_cancel)
+            }
+            "jp" -> {
+                search_et_keyword.hint = resources.getString(R.string.jp_search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.jp_location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.jp_current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.jp_keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.jp_cancel)
+            }
+            "ch" -> {
+                search_et_keyword.hint = resources.getString(R.string.ch_search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.ch_location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.ch_current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.ch_keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.ch_cancel)
+            }
+            "ge" -> {
+                search_et_keyword.hint = resources.getString(R.string.ge_search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.ge_location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.ge_current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.ge_keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.ge_cancel)
+            }
+            "sp" -> {
+                search_et_keyword.hint = resources.getString(R.string.sp_search_edit_text_hint)
+                search_btn_location.text = resources.getString(R.string.sp_location_search_btn)
+                search_btn_current_location.text = resources.getString(R.string.sp_current_location_search_btn)
+                search_btn_keyword_search.text = resources.getString(R.string.sp_keyword_search_btn)
+                search_btn_cancel.text = resources.getString(R.string.sp_cancel)
+            }
+        }
 
         search_btn_keyword_search.setOnClickListener(object : OnSingleClickListener() {
             override fun onSingleClick(v: View) {
@@ -99,21 +148,110 @@ class SearchActivity : BaseActivity() {
         showProgressDialog()
         val api = GetAreaCodeAPI.create()
 
-        api.getAreaCode().enqueue(object : Callback<ResponseGetAreaCode> {
-            override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
-                hideProgressDialog()
-                var responseGetAreaCode = response.body()
-                if (responseGetAreaCode != null) {
-                    showLocationDialog(responseGetAreaCode)
-                }
-            }
+        when (mLanguage) {
+            "ko" -> {
+                api.getAreaCode().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
 
-            override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
-                hideProgressDialog()
-                showCustomToast(resources.getString(R.string.network_error))
-                t.printStackTrace()
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
             }
-        })
+            "en" -> {
+                api.getAreaCode_en().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "jp" -> {
+                api.getAreaCode_jp().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ch" -> {
+                api.getAreaCode_ch().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "ge" -> {
+                api.getAreaCode_ge().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+            "sp" -> {
+                api.getAreaCode_sp().enqueue(object : Callback<ResponseGetAreaCode> {
+                    override fun onResponse(call: Call<ResponseGetAreaCode>, response: Response<ResponseGetAreaCode>) {
+                        hideProgressDialog()
+                        var responseGetAreaCode = response.body()
+                        if (responseGetAreaCode != null) {
+                            showLocationDialog(responseGetAreaCode)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseGetAreaCode>, t: Throwable) {
+                        hideProgressDialog()
+                        showCustomToast(resources.getString(R.string.network_error))
+                        t.printStackTrace()
+                    }
+                })
+            }
+        }
     }
 
     private fun showLocationDialog(responseGetAreaCode: ResponseGetAreaCode){

@@ -4,4 +4,55 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="loading">로딩중입니다.</string>
     <string name="network_error">네트워크 연결이 원활하지 않습니다.</string>
+
+
+
+    <!-- 한국어 -->
+    <string name="search_edit_text_hint">검색어 입력</string>
+    <string name="location_search_btn">지역 선택</string>
+    <string name="current_location_search_btn">내 위치로 검색</string>
+    <string name="keyword_search_btn">검색</string>
+    <string name="cancel">취소</string>
+    <string name="show_detail">상세보기</string>
+
+    <!-- 영어 -->
+    <string name="en_search_edit_text_hint">Enter search terms</string>
+    <string name="en_location_search_btn">region selection</string>
+    <string name="en_current_location_search_btn">Search to My Location</string>
+    <string name="en_keyword_search_btn">Search</string>
+    <string name="en_cancel">Cancellation</string>
+    <string name="en_show_detail">View Details</string>
+
+    <!-- 일본어 -->
+    <string name="jp_search_edit_text_hint">検索ワード入力</string>
+    <string name="jp_location_search_btn">地域選択</string>
+    <string name="jp_current_location_search_btn">自分の位置から検索</string>
+    <string name="jp_keyword_search_btn">検索</string>
+    <string name="jp_cancel">キャンセル</string>
+    <string name="jp_show_detail">詳細表示</string>
+
+    <!-- 중국어 -->
+    <string name="ch_search_edit_text_hint">输入搜索词</string>
+    <string name="ch_location_search_btn">地域选择</string>
+    <string name="ch_current_location_search_btn">搜索我的位置</string>
+    <string name="ch_keyword_search_btn">搜索</string>
+    <string name="ch_cancel">取消</string>
+    <string name="ch_show_detail">查看详情</string>
+
+    <!-- 독일어 -->
+    <string name="ge_search_edit_text_hint">Suchbegriff eingeben</string>
+    <string name="ge_location_search_btn">Regionale Auswahl</string>
+    <string name="ge_current_location_search_btn">Nach meiner Position suchen</string>
+    <string name="ge_keyword_search_btn">Suchen</string>
+    <string name="ge_cancel">Abbrechen</string>
+    <string name="ge_show_detail">Details anzeigen</string>
+
+    <!-- 스페인어 -->
+    <string name="sp_search_edit_text_hint">Búsqueda de idiomas</string>
+    <string name="sp_location_search_btn">Selección regional</string>
+    <string name="sp_current_location_search_btn">Buscando en mi posición.</string>
+    <string name="sp_keyword_search_btn">escudriñamiento</string>
+    <string name="sp_cancel">retractación</string>
+    <string name="sp_show_detail">desmenuzamiento</string>
+
 </resources>

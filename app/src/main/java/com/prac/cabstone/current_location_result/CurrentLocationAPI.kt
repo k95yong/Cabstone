@@ -21,6 +21,41 @@ interface CurrentLocationAPI {
         @Query("radius") radius : Int
     ): Call<ResponseGetResultForCurrent>
 
+    @GET("/en/location-based-list")
+    fun getResultForCurrent_en(
+        @Query("mapX") mapX : Double,
+        @Query("mapY") mapY : Double,
+        @Query("radius") radius : Int
+    ): Call<ResponseGetResultForCurrent>
+
+    @GET("/jp/location-based-list")
+    fun getResultForCurrent_jp(
+        @Query("mapX") mapX : Double,
+        @Query("mapY") mapY : Double,
+        @Query("radius") radius : Int
+    ): Call<ResponseGetResultForCurrent>
+
+    @GET("/ch/location-based-list")
+    fun getResultForCurrent_ch(
+        @Query("mapX") mapX : Double,
+        @Query("mapY") mapY : Double,
+        @Query("radius") radius : Int
+    ): Call<ResponseGetResultForCurrent>
+
+    @GET("/ge/location-based-list")
+    fun getResultForCurrent_ge(
+        @Query("mapX") mapX : Double,
+        @Query("mapY") mapY : Double,
+        @Query("radius") radius : Int
+    ): Call<ResponseGetResultForCurrent>
+
+    @GET("/sp/location-based-list")
+    fun getResultForCurrent_sp(
+        @Query("mapX") mapX : Double,
+        @Query("mapY") mapY : Double,
+        @Query("radius") radius : Int
+    ): Call<ResponseGetResultForCurrent>
+
     companion object {
 
         fun create(): CurrentLocationAPI {
