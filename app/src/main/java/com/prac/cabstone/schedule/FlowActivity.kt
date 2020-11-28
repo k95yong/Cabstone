@@ -1,5 +1,6 @@
 package com.prac.cabstone.schedule
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProviders
@@ -8,6 +9,7 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.PathOverlay
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.MainViewModel
 import com.prac.cabstone.R
@@ -27,6 +29,7 @@ class FlowActivity : BaseActivity(), OnMapReadyCallback {
     private var activeMarkers: Vector<Marker>? = null
     var mMarkerList: ArrayList<Todo> = ArrayList()
     lateinit var mNaverMap : NaverMap
+    var pathList = mutableListOf<LatLng>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +53,17 @@ class FlowActivity : BaseActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         mNaverMap = naverMap
         list = ArrayList(viewModel.getDayList(date, schedule_name))
+
         //val currentPosition: LatLng = getCurrentPosition(naverMap)
-        Log.e("marker map ready", list.toString())
+
+
         for(i in list){
+            if(i.mapX < 1.0 || i.mapY < 1.0)
+                continue
             val latLng = LatLng(i.mapY, i.mapX)
-            Log.e("markerList", i.toString())
+            pathList.add(latLng)
+
+            //Log.e("pathList", i.toString())
             val marker = Marker().apply {
 
                 setOnClickListener {
@@ -70,6 +79,13 @@ class FlowActivity : BaseActivity(), OnMapReadyCallback {
             marker.map = mNaverMap
             activeMarkers?.add(marker)
         }
+        pathList.reverse()
+        val path = PathOverlay()
+        path.coords = pathList
+        path.map = mNaverMap
+        path.color = Color.GREEN
+        path.passedColor = Color.GRAY
+        path.progress = 0.5
     }
 
     private fun freeActiveMarkers() {
