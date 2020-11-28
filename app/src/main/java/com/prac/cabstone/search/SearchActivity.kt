@@ -17,6 +17,7 @@ import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.GpsTracker
 import com.prac.cabstone.R
 import com.prac.cabstone.current_location_result.CurrentLocationActivity
+import com.prac.cabstone.keyword_search_result.KeywordSearchResultActivity
 import com.prac.cabstone.models.ResponseGetAreaCode
 import com.prac.cabstone.search_result.SearchResultActivity
 import kotlinx.android.synthetic.main.activity_search.*
@@ -37,6 +38,31 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        search_btn_keyword_search.setOnClickListener(object : OnSingleClickListener() {
+            override fun onSingleClick(v: View) {
+                if (!checkLocationServicesStatus()) {
+                    showDialogForLocationServiceSetting()
+                } else {
+                    checkRunTimePermission()
+                }
+                mGeocoder = Geocoder(this@SearchActivity)
+
+                val gpsTracker = GpsTracker(this@SearchActivity)
+                var lat = gpsTracker.getLatitude()
+                var lon = gpsTracker.getLongitude()
+                if (lat == 0.0 && lon == 0.0) {
+                    lat = 37.552302
+                    lon = 126.992189
+                }
+
+                var intent = Intent(this@SearchActivity, KeywordSearchResultActivity::class.java)
+                intent.putExtra("keyword", search_et_keyword.text.toString())
+                intent.putExtra("lat", lat)
+                intent.putExtra("lon", lon)
+                startActivity(intent)
+            }
+        })
 
         search_btn_location.setOnClickListener(object : OnSingleClickListener(){
             override fun onSingleClick(v: View) {

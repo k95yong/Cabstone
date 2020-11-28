@@ -169,8 +169,9 @@ class SearchDetailActivity : BaseActivity() {
                     search_title = responseGetSearchDetail.getData().getTitle()
                     search_detail_tv_title.text = search_title
                     addr1 = responseGetSearchDetail.getData().getAddr1()
-                    search_detail_tv_location.text = addr1
+                    search_detail_tv_location.text = "주소 : $addr1"
                     firstImage = responseGetSearchDetail.getData().getFirstimage()
+                    search_detail_tv_content.text = responseGetSearchDetail.getData().getOverview()
                     GlideApp.with(this@SearchDetailActivity).load(firstImage)
                         .centerCrop()
                         .into(search_detail_iv_image)
