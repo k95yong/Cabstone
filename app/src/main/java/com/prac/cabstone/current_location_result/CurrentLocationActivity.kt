@@ -8,6 +8,7 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.R
 import com.prac.cabstone.models.*
@@ -64,6 +65,7 @@ class CurrentLocationActivity : BaseActivity(), OnMapReadyCallback {
                 }
                 marker.position = latLng!!
                 marker.map = naverMap
+                marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
                 activeMarkers?.add(marker)
             }
         }

@@ -2,13 +2,13 @@ package com.prac.cabstone.schedule
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProviders
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PathOverlay
 import com.prac.cabstone.BaseActivity
 import com.prac.cabstone.MainViewModel
@@ -16,7 +16,6 @@ import com.prac.cabstone.R
 import com.prac.cabstone.models.ResponseGetInfoForAreaData
 import com.prac.cabstone.search_result.SearchResultBottomSheet
 import com.softsquared.myapplication.db.Todo
-import kotlinx.android.synthetic.main.activity_flow.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -54,16 +53,12 @@ class FlowActivity : BaseActivity(), OnMapReadyCallback {
         mNaverMap = naverMap
         list = ArrayList(viewModel.getDayList(date, schedule_name))
 
-        //val currentPosition: LatLng = getCurrentPosition(naverMap)
-
-
         for(i in list){
             if(i.mapX < 1.0 || i.mapY < 1.0)
                 continue
             val latLng = LatLng(i.mapY, i.mapX)
             pathList.add(latLng)
 
-            //Log.e("pathList", i.toString())
             val marker = Marker().apply {
 
                 setOnClickListener {
@@ -74,7 +69,7 @@ class FlowActivity : BaseActivity(), OnMapReadyCallback {
                 }
 
             }
-
+            marker.icon = OverlayImage.fromResource(R.drawable.ic_location_pin)
             marker.position = latLng!!
             marker.map = mNaverMap
             activeMarkers?.add(marker)
